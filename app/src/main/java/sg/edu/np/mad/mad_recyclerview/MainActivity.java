@@ -45,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                Item item = myAdapter._itemList.getItemAt(position);
                 builder.setTitle("Delete");
-                builder.setMessage("Are you sure you want to delete this task?");
+                builder.setMessage(format("Are you sure you want to delete task %s",item.getTitle()));
                 builder.setCancelable(false);
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     @Override
