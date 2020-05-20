@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
         add_btn = findViewById(R.id.buttonAdd);
         add_title = findViewById(R.id.add_task_name);
 
-
         myAdapter = new ItemAdapter(this, getItemList());
         mRecyclerView.setAdapter(myAdapter);
 
         myAdapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(final int position) {
+                Log.v(TAG,"Delete alert dialog popup!");
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 Item item = myAdapter._itemList.getItemAt(position);
                 builder.setTitle("Delete");
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
-                        Log.v(TAG,"User refuses to delete!");
+                        Log.v(TAG,format("User refuses to delete %s!",itemList.getItemAt(position).getTitle()));
                     }
                 });
 
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String title = add_title.getText().toString();
+                Log.v(TAG,format("%s is added",title));
                 add_title.setText("");
                 myAdapter._itemList.addItem(title);
                 myAdapter.notifyDataSetChanged();
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Item.ItemList getItemList(){
+        //initialise the fake data
         itemList = new Item.ItemList();
         itemList.addItem("Drink water");
         itemList.addItem("Workout");

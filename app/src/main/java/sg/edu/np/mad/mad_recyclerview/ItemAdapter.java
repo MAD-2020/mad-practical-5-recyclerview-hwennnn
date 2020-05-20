@@ -1,16 +1,17 @@
 package sg.edu.np.mad.mad_recyclerview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
+import static java.lang.String.format;
+
+public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
     final static String TAG = "ItemAdapter";
     public Item.ItemList _itemList;
@@ -19,6 +20,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     static View view;
 
     public interface OnItemClickListener{
+        //implement an interface then i can retrieve the position from the parameter
         void onItemClick(int position);
     }
 
@@ -31,36 +33,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         this._itemList = itemList;
     }
 
-    public static class ItemHolder extends RecyclerView.ViewHolder {
-
-        public TextView title;
-        public CheckBox item_checkbox;
-
-        public ItemHolder(@NonNull View itemView, final OnItemClickListener listener) {
-            super(itemView);
-
-            this.title = itemView.findViewById(R.id.to_do_title);
-            this.item_checkbox = itemView.findViewById(R.id.checkBox);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener!=null){
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
-                            listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
-        }
-    }
 
     @NonNull
     @Override
-    public ItemAdapter.ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.to_do_row,null);
-
         return new ItemHolder(view, mListener);
     }
 
@@ -72,8 +49,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
             @Override
             public void onClick(View v) {
                 if (item.checked){
+                    Log.v(TAG, format("%s is unchecked",item.getTitle()));
                     item.setUnchecked();
                 }else{
+                    Log.v(TAG, format("%s is checked",item.getTitle()));
                     item.setChecked();
                 }
             }

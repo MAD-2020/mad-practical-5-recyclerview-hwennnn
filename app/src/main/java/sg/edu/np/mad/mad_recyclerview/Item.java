@@ -22,6 +22,7 @@ public class Item {
     }
 
     public static class ItemList {
+        // so that i can customise the itemList function and also for future considerations
 
         private ArrayList<Item> itemList;
 
@@ -33,6 +34,6 @@ public class Item {
 
         public void removeItemAt(int position) { this.itemList.remove(position); }
 
-        public Integer size() { return this.itemList.size(); }
+        public int size() { return this.itemList.size(); }
     }
 }
