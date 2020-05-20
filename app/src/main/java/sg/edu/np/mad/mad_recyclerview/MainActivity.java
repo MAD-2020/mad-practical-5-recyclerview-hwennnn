@@ -4,11 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +22,7 @@ import static java.lang.String.format;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "HabitTracker";
+    private static final String TAG = "To-do-List";
     Item.ItemList itemList;
     RecyclerView mRecyclerView;
     ItemAdapter myAdapter;
@@ -44,11 +48,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(final int position) {
                 Log.v(TAG,"Delete alert dialog popup!");
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 Item item = myAdapter._itemList.getItemAt(position);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                //Inflate the custom layout
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+
+                TextView txt = dialogView.findViewById(R.id.message);
+                //set the text by using html
+                txt.setText(Html.fromHtml("Are you sure you want to delete<br/>"+ "<b>" + item.getTitle() + "?</b><br>"));
+
+                ImageView img = dialogView.findViewById(R.id.image);
+                //set the rubbish bin icon
+                img.setImageResource(android.R.drawable.ic_menu_delete);
+
                 builder.setTitle("Delete");
-                builder.setMessage(format("Are you sure you want to delete task %s",item.getTitle()));
+                builder.setView(dialogView);
                 builder.setCancelable(false);
+
+                //set the positive button which will delete the item
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -60,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+                //set the negative button which will not delete the item
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(TAG,format("User refuses to delete %s!",itemList.getItemAt(position).getTitle()));
@@ -72,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //this is to add the task
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

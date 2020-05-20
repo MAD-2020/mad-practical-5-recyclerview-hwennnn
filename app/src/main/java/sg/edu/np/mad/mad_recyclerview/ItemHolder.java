@@ -17,6 +17,7 @@ public class ItemHolder extends RecyclerView.ViewHolder {
 
         this.title = itemView.findViewById(R.id.to_do_title);
         this.item_checkbox = itemView.findViewById(R.id.checkBox);
+        //set an onclick listener when the holder is clicked
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
